@@ -16,8 +16,37 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+
+    //判断设备系统版本是否大于8.0
+    if ([UIDevice currentDevice].systemVersion.floatValue>8.0) {
+        //注册本地通知
+        UIUserNotificationSettings*settings=[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeNone|UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
+        [application registerUserNotificationSettings:settings];
+
+    }
+    
     return YES;
+}
+//本地通知注册成功调用方法
+-(void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings{
+    NSLog(@"本地通知成功");
+    
+    
+}
+//失败
+-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
+    NSLog(@"%@",error);
+
+}
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    
+    
+    //移除所有通知
+   // [application cancelAllLocalNotifications];
+    
+    //移除当前通知
+   // [application cancelLocalNotification:notification];
+
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -33,9 +62,11 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
-
+//变成前台
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    //移除角标
+    application.applicationIconBadgeNumber=0;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
